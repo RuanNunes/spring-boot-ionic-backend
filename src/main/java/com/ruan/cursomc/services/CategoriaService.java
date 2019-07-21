@@ -5,7 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ruan.cursomc.domain.Categoria;
+import com.ruan.cursomc.domains.Categoria;
 import com.ruan.cursomc.repositories.CategoriaRepository;
 import com.ruan.cursomc.services.exceptions.ObjectNotFoundException;
 

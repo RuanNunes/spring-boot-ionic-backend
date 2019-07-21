@@ -8,12 +8,17 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import com.ruan.cursomc.domain.Categoria;
-import com.ruan.cursomc.domain.Cidade;
-import com.ruan.cursomc.domain.Estado;
-import com.ruan.cursomc.domain.Produto;
+import com.ruan.cursomc.domain.enums.TipoCliente;
+import com.ruan.cursomc.domains.Categoria;
+import com.ruan.cursomc.domains.Cidade;
+import com.ruan.cursomc.domains.Cliente;
+import com.ruan.cursomc.domains.Endereco;
+import com.ruan.cursomc.domains.Estado;
+import com.ruan.cursomc.domains.Produto;
 import com.ruan.cursomc.repositories.CategoriaRepository;
 import com.ruan.cursomc.repositories.CidadeRepository;
+import com.ruan.cursomc.repositories.ClienteRepository;
+import com.ruan.cursomc.repositories.EnderecoRepository;
 import com.ruan.cursomc.repositories.EstadoRepository;
 import com.ruan.cursomc.repositories.ProdutoRepository;
 
@@ -27,9 +32,10 @@ public class CursomcApplication implements CommandLineRunner{
 	private EstadoRepository estadoRepository;
 	@Autowired
 	private CidadeRepository cidadeRepository;
-	
-	
-	
+	@Autowired
+	private ClienteRepository clienteRepository;
+	@Autowired
+	private EnderecoRepository enderecoRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(CursomcApplication.class, args);
@@ -66,11 +72,24 @@ public class CursomcApplication implements CommandLineRunner{
 		est1.getCidades().addAll(Arrays.asList(c1));
 		est2.getCidades().addAll(Arrays.asList(c2,c3));
 		
+		Cliente cli1 = new Cliente(null, "Maria Silva", "maria@gmail.com", "19186529968", TipoCliente.PESSOAFISICA);
+		cli1.getTelefones().addAll(Arrays.asList("88425264","23441234"));
+		
+		Endereco e1= new Endereco(null, "Rua Flores", "300", "Ao lado do bar", "jardins", "29260000", cli1, c1);
+		Endereco e2= new Endereco(null, "Avenida Matos", "3120", "Em frente a escola", "Centro", "22260000", cli1, c2);
+		
+		cli1.getEnderecos().addAll(Arrays.asList(e1,e2));
+		
 		//salvando os objetos
 		categoriaRepository.saveAll(Arrays.asList(cat1,cat2));
 		produtoRepository.saveAll(Arrays.asList(p1,p2,p3));
+		//primeiro salva os estados pois uma cidade pertence a um estado
 		estadoRepository.saveAll(Arrays.asList(est1,est2));
 		cidadeRepository.saveAll(Arrays.asList(c1,c2,c3));
+		
+		//salvando os cliente primeiro pois os endereços precisão dos cliente para fazer ligação
+		clienteRepository.saveAll(Arrays.asList(cli1));
+		enderecoRepository.saveAll(Arrays.asList(e1,e2));
 	}	
 
 }
