@@ -1,5 +1,6 @@
 package com.ruan.cursomc;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,18 +8,25 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import com.ruan.cursomc.domain.enums.EstadoPagamento;
 import com.ruan.cursomc.domain.enums.TipoCliente;
 import com.ruan.cursomc.domains.Categoria;
 import com.ruan.cursomc.domains.Cidade;
 import com.ruan.cursomc.domains.Cliente;
 import com.ruan.cursomc.domains.Endereco;
 import com.ruan.cursomc.domains.Estado;
+import com.ruan.cursomc.domains.Pagamento;
+import com.ruan.cursomc.domains.PagamentoComBoleto;
+import com.ruan.cursomc.domains.PagamentoComCartao;
+import com.ruan.cursomc.domains.Pedido;
 import com.ruan.cursomc.domains.Produto;
 import com.ruan.cursomc.repositories.CategoriaRepository;
 import com.ruan.cursomc.repositories.CidadeRepository;
 import com.ruan.cursomc.repositories.ClienteRepository;
 import com.ruan.cursomc.repositories.EnderecoRepository;
 import com.ruan.cursomc.repositories.EstadoRepository;
+import com.ruan.cursomc.repositories.PagamentoRepository;
+import com.ruan.cursomc.repositories.PedidoRepository;
 import com.ruan.cursomc.repositories.ProdutoRepository;
 
 @SpringBootApplication
@@ -35,6 +43,10 @@ public class CursomcApplication implements CommandLineRunner{
 	private ClienteRepository clienteRepository;
 	@Autowired
 	private EnderecoRepository enderecoRepository;
+	@Autowired
+	private PedidoRepository pedidoRepository;
+	@Autowired
+	private PagamentoRepository pagamentoRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(CursomcApplication.class, args);
@@ -79,6 +91,19 @@ public class CursomcApplication implements CommandLineRunner{
 		
 		cli1.getEnderecos().addAll(Arrays.asList(e1,e2));
 		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		Pedido ped1 = new Pedido(null, sdf.parse("30/09/2019 10:30"), cli1, e1);
+		Pedido ped2 = new Pedido(null, sdf.parse("10/10/2019 20:30"), cli1, e2);
+		
+		Pagamento pagto1 = new PagamentoComCartao(null, EstadoPagamento.QUITADO, ped1, 6);
+		ped1.setPagamento(pagto1);
+		Pagamento pagto2 = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE, ped2, sdf.parse("20/10/2019 00:00"),null);
+		ped2.setPagamento(pagto2);
+		
+		cli1.getPedidos().addAll(Arrays.asList(ped1,ped2));
+		
+		
+		
 		//salvando os objetos
 		categoriaRepository.saveAll(Arrays.asList(cat1,cat2));
 		produtoRepository.saveAll(Arrays.asList(p1,p2,p3));
@@ -89,6 +114,9 @@ public class CursomcApplication implements CommandLineRunner{
 		//salvando os cliente primeiro pois os endereços precisão dos cliente para fazer ligação
 		clienteRepository.saveAll(Arrays.asList(cli1));
 		enderecoRepository.saveAll(Arrays.asList(e1,e2));
+		
+		pedidoRepository.saveAll(Arrays.asList(ped1,ped2));
+		pagamentoRepository.saveAll(Arrays.asList(pagto1,pagto2));
 	}	
 
 }
