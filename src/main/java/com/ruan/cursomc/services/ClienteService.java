@@ -13,7 +13,7 @@ import com.ruan.cursomc.services.exceptions.ObjectNotFoundException;
 public class ClienteService {
 	@Autowired
 	private ClienteRepository repository;
-	public Cliente buscar(Integer id) {
+	public Cliente find(Integer id) {
 		Optional<Cliente> obj = repository.findById(id);
 		//orElseThrow recebe função que instancia uma exception customizada utilizando uma expressão lambda
 		return obj.orElseThrow(() -> new ObjectNotFoundException(    "Objeto não encontrado! Id: " 

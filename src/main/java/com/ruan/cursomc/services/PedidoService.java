@@ -14,7 +14,7 @@ import com.ruan.cursomc.services.exceptions.ObjectNotFoundException;
 public class PedidoService {
 	@Autowired
 	private PedidoRepository repository;
-	public Pedido buscar(Integer id) {
+	public Pedido find(Integer id) {
 		Optional<Pedido> obj = repository.findById(id);
 		//orElseThrow recebe função que instancia uma exception customizada utilizando uma expressão lambda
 		return obj.orElseThrow(() -> new ObjectNotFoundException(    "Objeto não encontrado! Id: " 
