@@ -11,7 +11,6 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.ruan.cursomc.domains.Cliente;
-import com.ruan.cursomc.domains.Cliente;
 import com.ruan.cursomc.dto.ClienteDTO;
 import com.ruan.cursomc.repositories.ClienteRepository;
 import com.ruan.cursomc.services.exceptions.DataIntegrityException;
