@@ -2,23 +2,40 @@ package com.ruan.cursomc.dto;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+
+import org.hibernate.validator.constraints.Length;
+
+import com.ruan.cursomc.services.validation.ClienteInsert;
+
+@ClienteInsert
 public class ClienteNewDTO implements Serializable{
 	private static final long serialVersionUID = 1L;
 	//Datos do Cliente
+	@NotEmpty(message = "Preenchimento Obrigatorio.")
+	@Length(min = 5, max = 120, message = "O tamanho deve ser entre 5 e 120 caracteres.")
 	private String nome;
+	@NotEmpty(message = "Preenchimento Obrigatorio.")
+	@Email(message = "Email obrigatório.")
 	private String email;
+	@NotEmpty(message = "Preenchimento Obrigatorio.")
 	private String cpfOuCnpj;
 	//mapeia o TipoCliente como codigo no banco de dados
 	private Integer tipo;
 	
 	//Dados do Endereço
+	@NotEmpty(message = "Preenchimento Obrigatorio.")
 	private String logradouro;
+	@NotEmpty(message = "Preenchimento Obrigatorio.")
 	private String numero;
 	private String complemento;
 	private String bairro;
+	@NotEmpty(message = "Preenchimento Obrigatorio.")
 	private String cep;
 	
 	//Dados do telefone 
+	@NotEmpty(message = "Preenchimento Obrigatorio.")
 	private String telefone1;
 	private String telefone2;
 	private String telefone3;
