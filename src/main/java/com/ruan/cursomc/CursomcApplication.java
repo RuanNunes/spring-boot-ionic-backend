@@ -1,7 +1,9 @@
 package com.ruan.cursomc;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -60,6 +62,12 @@ public class CursomcApplication implements CommandLineRunner{
 	public void run(String... args) throws Exception {
 		Categoria cat1 = new Categoria(null,"Informatica");
 		Categoria cat2 = new Categoria(null,"Escritorio");
+		List<Categoria> listCat = new ArrayList<>();
+		for (int i = 0; i < 100; i++) {
+			listCat.add(new Categoria(null, "Categoria" + i));
+		}
+		categoriaRepository.saveAll(listCat);
+		
 		
 		Produto p1 = new Produto(null, "computador", 2000);
 		Produto p2 = new Produto(null, "impressora", 800);
