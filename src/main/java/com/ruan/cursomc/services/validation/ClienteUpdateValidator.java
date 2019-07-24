@@ -1,7 +1,6 @@
 package com.ruan.cursomc.services.validation;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,13 +11,10 @@ import javax.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerMapping;
 
-import com.ruan.cursomc.domain.enums.TipoCliente;
 import com.ruan.cursomc.domains.Cliente;
 import com.ruan.cursomc.dto.ClienteDTO;
-import com.ruan.cursomc.dto.ClienteNewDTO;
 import com.ruan.cursomc.repositories.ClienteRepository;
 import com.ruan.cursomc.resources.exceptions.FieldMessage;
-import com.ruan.cursomc.services.validation.utils.BR;
 
 public class ClienteUpdateValidator implements ConstraintValidator<ClienteUpdate, ClienteDTO> {
 	
