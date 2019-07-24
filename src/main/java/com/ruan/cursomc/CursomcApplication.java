@@ -52,6 +52,7 @@ public class CursomcApplication implements CommandLineRunner{
 	@Autowired
 	private ItemPedidoRepository itemPedidoRepository;
 	
+	
 	public static void main(String[] args) {
 		SpringApplication.run(CursomcApplication.class, args);
 	}
@@ -171,7 +172,6 @@ public class CursomcApplication implements CommandLineRunner{
 		pagamentoRepository.saveAll(Arrays.asList(pagto1,pagto2));
 		
 		itemPedidoRepository.saveAll(Arrays.asList(ip1,ip2,ip3));
-		
 	}	
 
 }
