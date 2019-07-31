@@ -11,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.ruan.cursomc.domain.enums.EstadoPagamento;
+import com.ruan.cursomc.domain.enums.Perfil;
 import com.ruan.cursomc.domain.enums.TipoCliente;
 import com.ruan.cursomc.domains.Categoria;
 import com.ruan.cursomc.domains.Cidade;
@@ -127,10 +128,16 @@ public class DbService {
 		Cliente cli1 = new Cliente(null, "Maria Silva", "ruanschwanz@gmail.com", "19186529968", TipoCliente.PESSOAFISICA, encoder.encode("123"));
 		cli1.getTelefones().addAll(Arrays.asList("88425264","23441234"));
 		
+		Cliente cli2 = new Cliente(null, "Ana Costa", "ruansasdchwanz@gmail.com", "19186529968", TipoCliente.PESSOAFISICA, encoder.encode("123"));
+		cli2.getTelefones().addAll(Arrays.asList("88425264","23441234"));
+		cli2.addPerfil(Perfil.ADMIN);
+		
 		Endereco e1= new Endereco(null, "Rua Flores", "300", "Ao lado do bar", "jardins", "29260000", cli1, c1);
 		Endereco e2= new Endereco(null, "Avenida Matos", "3120", "Em frente a escola", "Centro", "22260000", cli1, c2);
+		Endereco e3= new Endereco(null, "Avenida Floriano", "3120", "Em frente a escola", "Centro", "22260000", cli2, c2);
 		
 		cli1.getEnderecos().addAll(Arrays.asList(e1,e2));
+		cli2.getEnderecos().addAll(Arrays.asList(e3,e2));
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		Pedido ped1 = new Pedido(null, sdf.parse("30/09/2019 10:30"), cli1, e1);
@@ -163,8 +170,8 @@ public class DbService {
 		cidadeRepository.saveAll(Arrays.asList(c1,c2,c3));
 		
 		//salvando os cliente primeiro pois os endereços precisão dos cliente para fazer ligação
-		clienteRepository.saveAll(Arrays.asList(cli1));
-		enderecoRepository.saveAll(Arrays.asList(e1,e2));
+		clienteRepository.saveAll(Arrays.asList(cli1,cli2));
+		enderecoRepository.saveAll(Arrays.asList(e1,e2,e3));
 		
 		pedidoRepository.saveAll(Arrays.asList(ped1,ped2));
 		pagamentoRepository.saveAll(Arrays.asList(pagto1,pagto2));
