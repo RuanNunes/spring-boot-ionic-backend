@@ -8,6 +8,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.ruan.cursomc.domain.enums.TipoCliente;
@@ -27,6 +28,9 @@ public class ClienteService {
 	private ClienteRepository repository;
 	@Autowired
 	private EnderecoRepository enderecoRepository;
+	
+	@Autowired
+	private BCryptPasswordEncoder encoder;
 	public Cliente find(Integer id) {
 		Optional<Cliente> obj = repository.findById(id);
 		//orElseThrow recebe função que instancia uma exception customizada utilizando uma expressão lambda
@@ -66,12 +70,12 @@ public class ClienteService {
 	}
 	
 	public Cliente fromDTO(ClienteDTO objDTO) {
-		return new Cliente(objDTO.getId(), objDTO.getNome(), objDTO.getEmail(), null, null);
+		return new Cliente(objDTO.getId(), objDTO.getNome(), objDTO.getEmail(), null, null, null);
 	}
 	
 	public Cliente fromDTO(ClienteNewDTO objDTO) {
 		Cliente cli = new Cliente(null, objDTO.getNome(), objDTO.getEmail(), objDTO.getCpfOuCnpj(), 
-								  TipoCliente.toEnum(objDTO.getTipo()));
+								  TipoCliente.toEnum(objDTO.getTipo()), encoder.encode(objDTO.getSenha()));
 		Cidade cid = new Cidade(objDTO.getCidadeId(), null);
 		Endereco end = new Endereco(null, objDTO.getLogradouro(), objDTO.getNumero(), objDTO.getComplemento(),
 									objDTO.getBairro(), objDTO.getCep(), cli, cid);

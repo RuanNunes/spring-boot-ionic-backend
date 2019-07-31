@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.ruan.cursomc.domain.enums.EstadoPagamento;
@@ -52,6 +53,8 @@ public class DbService {
 	private PagamentoRepository pagamentoRepository;
 	@Autowired
 	private ItemPedidoRepository itemPedidoRepository;
+	@Autowired
+	private BCryptPasswordEncoder encoder;
 	
 	public void instatiateTestDataBase() throws ParseException {
 		Categoria cat1 = new Categoria(null, "Informática");
@@ -121,7 +124,7 @@ public class DbService {
 		est1.getCidades().addAll(Arrays.asList(c1));
 		est2.getCidades().addAll(Arrays.asList(c2,c3));
 		
-		Cliente cli1 = new Cliente(null, "Maria Silva", "ruanschwanz@gmail.com", "19186529968", TipoCliente.PESSOAFISICA);
+		Cliente cli1 = new Cliente(null, "Maria Silva", "ruanschwanz@gmail.com", "19186529968", TipoCliente.PESSOAFISICA, encoder.encode("123"));
 		cli1.getTelefones().addAll(Arrays.asList("88425264","23441234"));
 		
 		Endereco e1= new Endereco(null, "Rua Flores", "300", "Ao lado do bar", "jardins", "29260000", cli1, c1);

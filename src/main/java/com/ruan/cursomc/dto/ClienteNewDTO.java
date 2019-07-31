@@ -23,6 +23,8 @@ public class ClienteNewDTO implements Serializable{
 	private String cpfOuCnpj;
 	//mapeia o TipoCliente como codigo no banco de dados
 	private Integer tipo;
+	@NotEmpty(message = "Preenchimento Obrigatorio.")
+	private String senha;
 	
 	//Dados do Endereço
 	@NotEmpty(message = "Preenchimento Obrigatorio.")
@@ -149,6 +151,14 @@ public class ClienteNewDTO implements Serializable{
 
 	public void setCidadeId(Integer cidadeId) {
 		this.cidadeId = cidadeId;
+	}
+
+	public String getSenha() {
+		return senha;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
 	}
 	
 	
