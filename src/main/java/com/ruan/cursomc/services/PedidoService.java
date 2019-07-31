@@ -31,6 +31,10 @@ public class PedidoService {
 	private ItemPedidoRepository itemPedidoRepository;
 	@Autowired
 	private ClienteService clienteService;
+	
+	//Ao utilizar @Autowired o spring procura se existe algum @Bean para fazer a instanciação da ingeção de dependencia 
+	@Autowired
+	private EmailService emailService;
 	public Pedido find(Integer id) {
 		Optional<Pedido> obj = repository.findById(id);
 		//orElseThrow recebe função que instancia uma exception customizada utilizando uma expressão lambda
@@ -58,7 +62,7 @@ public class PedidoService {
 			ip.setPedido(obj);
 		}
 		itemPedidoRepository.saveAll(obj.getItens());
-		System.out.println(obj);
+		emailService.sendOrderConfirmationEmail(obj);
 		return obj;
 	}
 }
