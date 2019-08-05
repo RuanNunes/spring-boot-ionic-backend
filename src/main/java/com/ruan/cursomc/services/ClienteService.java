@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.ruan.cursomc.domain.enums.Perfil;
 import com.ruan.cursomc.domain.enums.TipoCliente;
 import com.ruan.cursomc.domains.Cidade;
 import com.ruan.cursomc.domains.Cliente;
@@ -19,6 +20,8 @@ import com.ruan.cursomc.dto.ClienteDTO;
 import com.ruan.cursomc.dto.ClienteNewDTO;
 import com.ruan.cursomc.repositories.ClienteRepository;
 import com.ruan.cursomc.repositories.EnderecoRepository;
+import com.ruan.cursomc.security.UserSS;
+import com.ruan.cursomc.services.exceptions.AuthorizationException;
 import com.ruan.cursomc.services.exceptions.DataIntegrityException;
 import com.ruan.cursomc.services.exceptions.ObjectNotFoundException;
 
@@ -28,10 +31,16 @@ public class ClienteService {
 	private ClienteRepository repository;
 	@Autowired
 	private EnderecoRepository enderecoRepository;
-	
 	@Autowired
 	private BCryptPasswordEncoder encoder;
+	
 	public Cliente find(Integer id) {
+		UserSS user = UserService.authenticated();
+		
+		if(user==null || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())) {
+			throw new AuthorizationException("Acesso negado.");
+		}
+		
 		Optional<Cliente> obj = repository.findById(id);
 		//orElseThrow recebe função que instancia uma exception customizada utilizando uma expressão lambda
 		return obj.orElseThrow(() -> new ObjectNotFoundException(    "Objeto não encontrado! Id: " 
